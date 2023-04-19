@@ -1,10 +1,13 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:store_api_flutter_course/consts/global_colors.dart';
 import 'package:store_api_flutter_course/widgets/appbar_icons.dart';
+import 'package:store_api_flutter_course/widgets/feeds_widget.dart';
 
 import '../widgets/sale_widget.dart';
+import 'feeds_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -95,34 +98,47 @@ class _HomeScreenState extends State<HomeScreen> {
                         // control: const SwiperControl(),
                       ),
                     ),
-                    //           Padding(
-                    //             padding: const EdgeInsets.all(8.0),
-                    //             child: Row(
-                    //               children: [
-                    //                 const Text(
-                    //                   "Latest Products",
-                    //                   style: TextStyle(
-                    //                     fontWeight: FontWeight.w600,
-                    //                     fontSize: 18,
-                    //                   ),
-                    //                 ),
-                    //                 const Spacer(),
-                    //                 AppBarIcons(
-                    //                     function: () {
-                    //                       Navigator.push(
-                    //                           context,
-                    //                           PageTransition(
-                    //                               type: PageTransitionType.fade,
-                    //                               child: const FeedsScreen()));
-                    //                     },
-                    //                     icon: IconlyBold.arrowRight2),
-                    //               ],
-                    //             ),
-
-                    // ),
+                    //FeedsWidget()
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Latest Products",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const Spacer(),
+                          AppBarIcons(
+                              function: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.fade,
+                                        child: const FeedsScreen()));
+                              },
+                              icon: IconlyBold.arrowRight2),
+                        ],
+                      ),
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 10,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 4,
+                              mainAxisSpacing: 6),
+                      itemBuilder: (ctx, index) {
+                        return const FeedsWidget();
+                      },
+                    )
                   ],
                 ),
-              ))
+              )),
             ])));
   }
 }
