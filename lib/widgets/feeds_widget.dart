@@ -68,7 +68,8 @@ class FeedsWidget extends StatelessWidget {
                       color: Colors.red,
                       size: 28,
                     ),
-                    imageUrl: "https://i.ibb.co/vwB46Yq/shoes.png",
+                    imageUrl:
+                        "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0MXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
                     boxFit: BoxFit.cover,
                   ),
                 ),

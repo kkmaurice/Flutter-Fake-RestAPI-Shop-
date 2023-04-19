@@ -20,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 0.0,
               mainAxisSpacing: 0.0,
-              childAspectRatio: 0.7),
+              childAspectRatio: 0.8),
           itemBuilder: (ctx, index) {
             return const FeedsWidget();
           }),
