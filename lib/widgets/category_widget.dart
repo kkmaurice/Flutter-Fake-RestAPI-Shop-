@@ -2,16 +2,17 @@
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
 import 'package:store_api_flutter_course/consts/global_colors.dart';
+import 'package:store_api_flutter_course/models/categories_model.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Category cat = context.watch<Category>();
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -27,15 +28,14 @@ class CategoryWidget extends StatelessWidget {
                 color: Colors.red,
                 size: 28,
               ),
-              imageUrl:
-                  "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0MXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+              imageUrl: cat.image!,
               boxFit: BoxFit.cover,
             ),
           ),
           Align(
             alignment: Alignment.center,
             child: Text(
-              "Shoes",
+              cat.name!,
               textAlign: TextAlign.center,
               style: TextStyle(
                 //color: Colors.bl,
