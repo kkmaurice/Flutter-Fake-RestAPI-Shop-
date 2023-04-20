@@ -70,113 +70,112 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             body: FutureBuilder(
-              future: context.read<ProductProvider>().getProducts(),
-              builder: (context, data){
-                if(data.hasData){
-                  return Column(
-              children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                    controller: searchController,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      filled: true,
-                      fillColor: Theme.of(context).cardColor,
-                      suffixIcon: Icon(
-                        IconlyLight.search,
-                        color: lightIconsColor,
+                future: context.read<ProductProvider>().getProducts(),
+                builder: (context, data) {
+                  if (data.hasData) {
+                    return Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                            controller: searchController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "Search",
+                              filled: true,
+                              fillColor: Theme.of(context).cardColor,
+                              suffixIcon: Icon(
+                                IconlyLight.search,
+                                color: lightIconsColor,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).cardColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            )),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).cardColor,
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                    )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.25,
-                      child: Swiper(
-                        itemCount: 3,
-                        itemBuilder: (ctx, index) {
-                          return const SaleWidget();
-                        },
-                        autoplay: true,
-                        pagination: const SwiperPagination(
-                            alignment: Alignment.bottomCenter,
-                            builder: DotSwiperPaginationBuilder(
-                                color: Colors.white, activeColor: Colors.red)),
-                        // control: const SwiperControl(),
-                      ),
-                    ),
-                    //FeedsWidget()
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Latest Products",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
+                      Expanded(
+                          child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.25,
+                              child: Swiper(
+                                itemCount: 3,
+                                itemBuilder: (ctx, index) {
+                                  return const SaleWidget();
+                                },
+                                autoplay: true,
+                                pagination: const SwiperPagination(
+                                    alignment: Alignment.bottomCenter,
+                                    builder: DotSwiperPaginationBuilder(
+                                        color: Colors.white,
+                                        activeColor: Colors.red)),
+                                // control: const SwiperControl(),
+                              ),
                             ),
-                          ),
-                          const Spacer(),
-                          AppBarIcons(
-                              function: () {
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        type: PageTransitionType.fade,
-                                        child: const FeedsScreen()));
+                            //FeedsWidget()
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    "Latest Products",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  AppBarIcons(
+                                      function: () {
+                                        Navigator.push(
+                                            context,
+                                            PageTransition(
+                                                type: PageTransitionType.fade,
+                                                child: const FeedsScreen()));
+                                      },
+                                      icon: IconlyBold.arrowRight2),
+                                ],
+                              ),
+                            ),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 5,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 4,
+                                      mainAxisSpacing: 6),
+                              itemBuilder: (ctx, index) {
+                                final provider =
+                                    context.watch<ProductProvider>().products;
+                                return ChangeNotifierProvider.value(
+                                  value: provider[index],
+                                  child: const FeedsWidget(),
+                                );
                               },
-                              icon: IconlyBold.arrowRight2),
-                        ],
-                      ),
-                    ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: context.watch<ProductProvider>().products.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 4,
-                              mainAxisSpacing: 6),
-                      itemBuilder: (ctx, index) {
-                        final provider = context.watch<ProductProvider>().products;
-                        return FeedsWidget(
-                          title: provider[index].title!, 
-                          image: provider[index].images![0], 
-                          price: provider[index].price!.toString(),
-                          );
-                      },
-                    )
-                  ],
-                ),
-              )),
-            ]);
-                } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-              } 
-              
-        )));
+                            )
+                          ],
+                        ),
+                      )),
+                    ]);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                })));
   }
 }

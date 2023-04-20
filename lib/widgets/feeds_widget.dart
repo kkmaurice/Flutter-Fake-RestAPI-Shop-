@@ -4,18 +4,22 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import 'package:store_api_flutter_course/models/products_model.dart';
+import 'package:store_api_flutter_course/providers/product_provider.dart';
 
 import '../consts/global_colors.dart';
 import '../screens/product_details_screen.dart';
 
 class FeedsWidget extends StatelessWidget {
-   FeedsWidget({Key? key, required this.title, required this.image, required this.price}) : super(key: key);
-  String title;
-  String image;
-  String price;
+  const FeedsWidget(
+      {Key? key,})
+      : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    ProductsModel prod = context.watch<ProductsModel>();
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -49,7 +53,7 @@ class FeedsWidget extends StatelessWidget {
                                 color: Color.fromRGBO(33, 150, 243, 1)),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: price,
+                                  text: '${prod.price}',
                                   style: TextStyle(
                                       color: lightTextColor,
                                       fontWeight: FontWeight.w600)),
@@ -73,16 +77,16 @@ class FeedsWidget extends StatelessWidget {
                       color: Colors.red,
                       size: 28,
                     ),
-                    imageUrl: image,
+                    imageUrl: prod.images![0],
                     boxFit: BoxFit.cover,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  '$title',
+                  '${prod.title}',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(
