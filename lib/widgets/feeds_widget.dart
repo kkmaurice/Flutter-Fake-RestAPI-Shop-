@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, prefer_if_null_operators
+
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -7,7 +9,10 @@ import '../consts/global_colors.dart';
 import '../screens/product_details_screen.dart';
 
 class FeedsWidget extends StatelessWidget {
-  const FeedsWidget({Key? key}) : super(key: key);
+   FeedsWidget({Key? key, required this.title, required this.image, required this.price}) : super(key: key);
+  String title;
+  String image;
+  String price;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,7 @@ class FeedsWidget extends StatelessWidget {
                                 color: Color.fromRGBO(33, 150, 243, 1)),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: "168.00",
+                                  text: price,
                                   style: TextStyle(
                                       color: lightTextColor,
                                       fontWeight: FontWeight.w600)),
@@ -68,20 +73,19 @@ class FeedsWidget extends StatelessWidget {
                       color: Colors.red,
                       size: 28,
                     ),
-                    imageUrl:
-                        "https://images.unsplash.com/photo-1681385936857-d7bd675a9057?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0MXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
+                    imageUrl: image,
                     boxFit: BoxFit.cover,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+               Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Title",
+                  '$title',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 17,
                     //  fontFamily: 'Roboto',
                     fontWeight: FontWeight.w700,

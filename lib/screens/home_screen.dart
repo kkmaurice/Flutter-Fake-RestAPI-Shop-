@@ -2,9 +2,12 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:store_api_flutter_course/consts/global_colors.dart';
+import 'package:store_api_flutter_course/providers/product_provider.dart';
 import 'package:store_api_flutter_course/screens/category_screen.dart';
 import 'package:store_api_flutter_course/screens/users_screen.dart';
+import 'package:store_api_flutter_course/services/api_handler.dart';
 import 'package:store_api_flutter_course/widgets/appbar_icons.dart';
 import 'package:store_api_flutter_course/widgets/feeds_widget.dart';
 
@@ -21,6 +24,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
 
+//  @override
+//   void didChangeDependencies() {
+//     super.didChangeDependencies();
+//     ApiHandler.getAllProducts();
+//   }
   @override
   void dispose() {
     searchController.dispose();
@@ -61,7 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            body: Column(children: [
+            body: FutureBuilder(
+              future: context.read<ProductProvider>().getProducts(),
+              builder: (context, data){
+                if(data.hasData){
+                  return Column(
+              children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -140,19 +153,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 10,
+                      itemCount: context.watch<ProductProvider>().products.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               crossAxisSpacing: 4,
                               mainAxisSpacing: 6),
                       itemBuilder: (ctx, index) {
-                        return const FeedsWidget();
+                        final provider = context.watch<ProductProvider>().products;
+                        return FeedsWidget(
+                          title: provider[index].title!, 
+                          image: provider[index].images![0], 
+                          price: provider[index].price!.toString(),
+                          );
                       },
                     )
                   ],
                 ),
               )),
-            ])));
+            ]);
+                } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+              } 
+              
+        )));
   }
 }
