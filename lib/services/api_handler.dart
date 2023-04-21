@@ -42,4 +42,15 @@ class ApiHandler {
       throw Exception('Failed to load posts');
     }
   }
+
+  // get product by id
+  static Future<ProductsModel> getProductById(int id) async {
+    final response = await http.get(Uri.parse('$_baseUrl/$id'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> product = json.decode(response.body);
+      return ProductsModel.fromJson(product);
+    } else {
+      throw Exception('Failed to load posts');
+    }
+  }
 }

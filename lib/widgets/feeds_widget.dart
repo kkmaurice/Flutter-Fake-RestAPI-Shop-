@@ -12,10 +12,9 @@ import '../consts/global_colors.dart';
 import '../screens/product_details_screen.dart';
 
 class FeedsWidget extends StatelessWidget {
-  const FeedsWidget(
-      {Key? key,})
-      : super(key: key);
-
+  const FeedsWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class FeedsWidget extends StatelessWidget {
               context,
               PageTransition(
                 type: PageTransitionType.fade,
-                child: const ProductDetails(),
+                child:  ProductDetails(id: prod.id!,),
               ),
             );
           },
