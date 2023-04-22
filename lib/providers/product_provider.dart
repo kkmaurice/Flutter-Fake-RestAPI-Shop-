@@ -9,8 +9,8 @@ class ProductProvider with ChangeNotifier {
 
   List<ProductsModel> get products => _products;
 
-  ProductsModel? _productModel;
-  ProductsModel? get productModel => _productModel;
+  // ProductsModel? _productModel;
+  // ProductsModel? get productModel => _productModel;
 
   Future<List<ProductsModel>> getProducts() async {
     var prod = await ApiHandler.getAllProducts();
@@ -22,4 +22,16 @@ class ProductProvider with ChangeNotifier {
   }
 
   // get product by id
+  ProductsModel getProductById(int id) {
+    return _products.firstWhere((element) => element.id == id);
+  }
+
+  // Future<ProductsModel> getProductById(int id) async {
+  //   var prod = await ApiHandler.getProductById(id);
+  //   if (prod is ProductsModel) {
+  //     _productModel = prod;
+  //   }
+  //   notifyListeners();
+  //   return _productModel!;
+  // }
 }

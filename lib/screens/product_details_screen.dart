@@ -22,22 +22,12 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final titleStyle = const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
-  ProductsModel? product;
-
-  Future<void> getProductInfo() async {
-    product = await ApiHandler.getProductById(widget.id);
-    setState(() {});
-  }
-
-  @override
-  void didChangeDependencies() {
-    getProductInfo();
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
     //int _productId = ModalRoute.of(context)!.settings.arguments as int;
+    ProductsModel product =
+        Provider.of<ProductProvider>(context).getProductById(widget.id);
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -61,7 +51,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product!.category!.name!,
+                              product.category!.name!,
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w500),
                             ),
@@ -74,7 +64,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 Flexible(
                                   flex: 3,
                                   child: Text(
-                                    "${product!.title}",
+                                    "${product.title}",
                                     textAlign: TextAlign.start,
                                     style: titleStyle,
                                   ),
@@ -90,7 +80,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                 33, 150, 243, 1)),
                                         children: <TextSpan>[
                                           TextSpan(
-                                              text: "${product!.price}",
+                                              text: "${product.price}",
                                               style: TextStyle(
                                                   color: lightTextColor,
                                                   fontWeight: FontWeight.bold)),
@@ -111,7 +101,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           itemBuilder: (BuildContext context, int index) {
                             return FancyShimmerImage(
                               width: double.infinity,
-                              imageUrl: product!.images![index],
+                              imageUrl: product.images![index],
                               boxFit: BoxFit.cover,
                             );
                           },
@@ -141,7 +131,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               height: 18,
                             ),
                             Text(
-                              "${product!.description}",
+                              "${product.description}",
                               textAlign: TextAlign.start,
                               style: const TextStyle(fontSize: 25),
                             ),
