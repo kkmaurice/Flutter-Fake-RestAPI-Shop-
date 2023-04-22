@@ -69,4 +69,5 @@ class ApiHandler {
       throw Exception("Failed to load posts $e");
   }
 }
+
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_type_check
+// ignore_for_file: unnecessary_type_check, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
 import 'package:store_api_flutter_course/models/products_model.dart';
@@ -9,7 +9,8 @@ class ProductProvider with ChangeNotifier {
 
   List<ProductsModel> get products => _products;
 
-  // ProductsModel? _productModel;
+  List<ProductsModel> _searchList = [];
+  List<ProductsModel> get searchList => _searchList;
   // ProductsModel? get productModel => _productModel;
 
   Future<List<ProductsModel>> getProducts() async {
@@ -26,12 +27,15 @@ class ProductProvider with ChangeNotifier {
     return _products.firstWhere((element) => element.id == id);
   }
 
-  // Future<ProductsModel> getProductById(int id) async {
-  //   var prod = await ApiHandler.getProductById(id);
-  //   if (prod is ProductsModel) {
-  //     _productModel = prod;
-  //   }
-  //   notifyListeners();
-  //   return _productModel!;
+  // get product by category
+  // List<ProductsModel> getProductByCategory(String category) {
+  //   return _products.where((element) => element.category == category).toList();
   // }
+
+  //search product
+  List<ProductsModel> searchProduct(String query) {
+    _searchList = _products.where((element) => element.title!.toLowerCase().contains(query.toLowerCase())).toList();
+    notifyListeners();
+    return _searchList;
+  }
 }

@@ -77,31 +77,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
-                            controller: searchController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: "Search",
-                              filled: true,
-                              fillColor: Theme.of(context).cardColor,
-                              suffixIcon: Icon(
-                                IconlyLight.search,
-                                color: lightIconsColor,
+                          controller: searchController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: "Search",
+                            filled: true,
+                            fillColor: Theme.of(context).cardColor,
+                            suffixIcon: Icon(
+                              IconlyLight.search,
+                              color: lightIconsColor,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).cardColor,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).cardColor,
-                                ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                            )),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              context
+                                  .read<ProductProvider>()
+                                  .searchProduct(value);
+                            } else {
+                              context.read<ProductProvider>().getProducts();
+                            }
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -153,8 +162,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             GridView.builder(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 5,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: searchController.text.isNotEmpty
+                                  ? context
+                                      .watch<ProductProvider>()
+                                      .searchList
+                                      .length
+                                  : context
+                                      .watch<ProductProvider>()
+                                      .products.take(6)
+                                      .length,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -164,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final provider =
                                     context.watch<ProductProvider>().products;
                                 return ChangeNotifierProvider.value(
-                                  value: provider[index],
+                                  value: searchController.text.isEmpty ? provider[index] : context.watch<ProductProvider>().searchList[index],
                                   child: const FeedsWidget(),
                                 );
                               },
